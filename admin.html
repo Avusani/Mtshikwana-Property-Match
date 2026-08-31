@@ -1,0 +1,637 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Admin | Mtshikwana Property Match</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    /* ===== SAME COLORS AS INDEX.HTML ===== */
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      background: #f0f7f4;
+      color: #17201b;
+      line-height: 1.6;
+    }
+    a { text-decoration: none; color: inherit; cursor: pointer; }
+
+    /* ===== ADMIN HEADER ===== */
+    .admin-header {
+      background: #0f1a14;
+      color: #fff;
+      padding: 16px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    }
+    .admin-header .admin-brand { font-weight: 700; font-size: 18px; }
+    .admin-header .admin-brand span { color: #4caf8a; }
+    .admin-header .admin-brand .gold { color: #b8860b; }
+    .admin-header .admin-actions { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
+    .admin-header .admin-actions button {
+      padding: 6px 16px;
+      border: 1px solid rgba(255,255,255,0.3);
+      background: transparent;
+      color: #fff;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 13px;
+      transition: all 0.2s;
+    }
+    .admin-header .admin-actions button:hover { background: rgba(255,255,255,0.1); }
+    .admin-header .admin-actions .btn-danger { border-color: #b8493b; color: #b8493b; }
+    .admin-header .admin-actions .btn-danger:hover { background: #b8493b; color: #fff; }
+
+    .admin-container { max-width: 1400px; margin: 0 auto; padding: 20px; }
+
+    /* ===== LOGIN BOX ===== */
+    .login-box {
+      max-width: 400px;
+      margin: 80px auto;
+      background: #fff;
+      padding: 35px;
+      border-radius: 12px;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.12);
+    }
+    .login-box h2 { color: #17201b; font-size: 24px; margin-bottom: 8px; }
+    .login-box p { color: #637268; font-size: 14px; margin-bottom: 20px; }
+    .login-box input {
+      width: 100%;
+      padding: 12px 14px;
+      border: 1px solid #dce5e0;
+      border-radius: 8px;
+      font-size: 16px;
+      background: #f9fcfb;
+    }
+    .login-box input:focus {
+      border-color: #0f7a5f;
+      outline: none;
+      box-shadow: 0 0 0 3px rgba(15, 122, 95, 0.1);
+    }
+    .login-box button {
+      width: 100%;
+      padding: 12px;
+      background: #0f7a5f;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .login-box button:hover { background: #095741; }
+    .login-error {
+      color: #b8493b;
+      background: #fde5df;
+      padding: 10px;
+      border-radius: 6px;
+      display: none;
+      margin-top: 10px;
+    }
+
+    /* ===== ADMIN STATS ===== */
+    .admin-stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 14px;
+      margin-bottom: 24px;
+    }
+    .admin-stat {
+      background: #fff;
+      padding: 16px;
+      border-radius: 10px;
+      border: 1px solid #dce5e0;
+      text-align: center;
+    }
+    .admin-stat .number {
+      font-size: 28px;
+      font-weight: 900;
+      color: #0f7a5f;
+    }
+    .admin-stat .label {
+      font-size: 12px;
+      color: #637268;
+    }
+
+    /* ===== ADMIN TABS ===== */
+    .admin-tabs {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: 20px;
+      background: #fff;
+      padding: 12px;
+      border-radius: 10px;
+      border: 1px solid #dce5e0;
+    }
+    .admin-tabs button {
+      padding: 8px 18px;
+      border: 1px solid #dce5e0;
+      border-radius: 6px;
+      background: #fff;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 13px;
+      transition: all 0.2s;
+    }
+    .admin-tabs button.active {
+      background: #0f7a5f;
+      color: #fff;
+      border-color: #0f7a5f;
+    }
+    .admin-tabs button .count {
+      background: #eaf3ee;
+      padding: 1px 8px;
+      border-radius: 12px;
+      font-size: 11px;
+      margin-left: 4px;
+    }
+    .admin-tabs button.active .count { background: rgba(255,255,255,0.25); color: #fff; }
+
+    .admin-section { display: none; }
+    .admin-section.active { display: block; }
+
+    /* ===== ADMIN CARDS ===== */
+    .admin-card {
+      background: #fff;
+      padding: 20px;
+      border-radius: 10px;
+      border: 1px solid #dce5e0;
+      margin-bottom: 20px;
+    }
+    .admin-card .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+    .admin-card .card-header h3 { margin: 0; color: #17201b; }
+
+    /* ===== LIST ITEMS ===== */
+    .list-item {
+      background: #f9fcfb;
+      padding: 14px 16px;
+      border-radius: 8px;
+      margin-bottom: 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 10px;
+      border-left: 4px solid #0f7a5f;
+    }
+    .list-item .info { flex: 1; min-width: 200px; }
+    .list-item .info .name { font-weight: 700; color: #17201b; }
+    .list-item .info .sub { font-size: 13px; color: #637268; }
+    .list-item .actions { display: flex; gap: 6px; flex-wrap: wrap; }
+    .list-item .actions button {
+      padding: 4px 14px;
+      border: none;
+      border-radius: 6px;
+      font-weight: 600;
+      font-size: 12px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .list-item .actions .btn-success { background: #0f7a5f; color: #fff; }
+    .list-item .actions .btn-success:hover { background: #095741; }
+    .list-item .actions .btn-danger { background: #b8493b; color: #fff; }
+    .list-item .actions .btn-danger:hover { background: #9a3d31; }
+    .list-item .actions .btn-warning { background: #e5a638; color: #fff; }
+    .list-item .actions .btn-warning:hover { background: #cc942f; }
+    .list-item .actions .btn-whatsapp { background: #25D366; color: #fff; }
+    .list-item .actions .btn-whatsapp:hover { background: #1da851; }
+
+    /* ===== STATUS BADGES ===== */
+    .status-badge {
+      display: inline-block;
+      padding: 2px 12px;
+      border-radius: 20px;
+      font-size: 11px;
+      font-weight: 700;
+    }
+    .status-badge.confirmed { background: #d1fae5; color: #065f46; }
+    .status-badge.pending { background: #fef3c7; color: #92400e; }
+    .status-badge.completed { background: #dbeafe; color: #1e40af; }
+    .status-badge.cancelled { background: #fee2e2; color: #991b1b; }
+
+    .empty { color: #637268; text-align: center; padding: 40px; }
+
+    /* ===== CALENDAR ===== */
+    .calendar-grid {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 4px;
+      margin-top: 12px;
+    }
+    .calendar-grid .cal-header {
+      font-weight: 700;
+      text-align: center;
+      padding: 8px;
+      font-size: 13px;
+      color: #637268;
+    }
+    .calendar-grid .cal-day {
+      padding: 8px 4px;
+      text-align: center;
+      border-radius: 6px;
+      min-height: 60px;
+      cursor: pointer;
+      transition: all 0.2s;
+      font-size: 14px;
+      background: #f9fcfb;
+      position: relative;
+    }
+    .calendar-grid .cal-day:hover { background: #eaf3ee; }
+    .calendar-grid .cal-day.today { background: #0f7a5f; color: #fff; font-weight: 700; }
+    .calendar-grid .cal-day.has-appointment { border-bottom: 3px solid #0f7a5f; }
+    .calendar-grid .cal-day .appt-indicator {
+      position: absolute;
+      bottom: 2px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 6px;
+      height: 6px;
+      background: #0f7a5f;
+      border-radius: 50%;
+    }
+    .calendar-grid .cal-day.empty { background: transparent; cursor: default; }
+    .calendar-nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+    .calendar-nav button {
+      background: none;
+      border: none;
+      font-size: 20px;
+      cursor: pointer;
+      color: #17201b;
+      padding: 4px 12px;
+    }
+    .calendar-nav .month-label { font-weight: 700; font-size: 18px; }
+
+    /* ===== BUTTONS ===== */
+    .btn-nav { background: #0f7a5f; color: #fff; padding: 8px 20px; border-radius: 8px; font-weight: 600; font-size: 13px; border: none; cursor: pointer; transition: background 0.2s; }
+    .btn-nav:hover { background: #095741; }
+
+    /* ===== MODALS ===== */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.6);
+      z-index: 2000;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      backdrop-filter: blur(4px);
+    }
+    .modal-overlay.show { display: flex; }
+    .modal {
+      background: #fff;
+      border-radius: 14px;
+      max-width: 520px;
+      width: 100%;
+      max-height: 95vh;
+      overflow-y: auto;
+      padding: 32px;
+      position: relative;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+    }
+    .modal .close {
+      position: absolute;
+      top: 12px;
+      right: 16px;
+      font-size: 28px;
+      cursor: pointer;
+      color: #637268;
+      background: none;
+      border: none;
+    }
+    .modal .close:hover { color: #b8493b; }
+    .modal h2 { color: #17201b; font-size: 24px; margin-bottom: 8px; }
+    .modal p { color: #637268; font-size: 14px; margin-bottom: 20px; }
+    .form-group { margin-bottom: 16px; }
+    .form-group label { display: block; font-weight: 600; font-size: 13px; margin-bottom: 4px; color: #17201b; }
+    .form-group input, .form-group select, .form-group textarea {
+      width: 100%;
+      padding: 10px 14px;
+      border: 1px solid #dce5e0;
+      border-radius: 8px;
+      font-size: 14px;
+      font-family: inherit;
+      transition: border 0.2s;
+      background: #f9fcfb;
+    }
+    .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+      border-color: #0f7a5f;
+      outline: none;
+      box-shadow: 0 0 0 3px rgba(15, 122, 95, 0.1);
+    }
+    .form-group textarea { min-height: 80px; resize: vertical; }
+    .btn-submit {
+      width: 100%;
+      padding: 14px;
+      background: #0f7a5f;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .btn-submit:hover { background: #095741; }
+
+    /* ===== RESPONSIVE ===== */
+    @media (max-width: 768px) {
+      .admin-stats { grid-template-columns: repeat(2, 1fr); }
+      .calendar-grid .cal-day { min-height: 40px; font-size: 12px; padding: 4px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ===== ADMIN PANEL ===== -->
+<div class="admin-panel" id="adminPanel">
+  <div class="admin-header">
+    <div class="admin-brand">
+      🔐 Mtshikwana <span>Property Match</span> 
+      <span style="font-size:12px;font-weight:400;color:rgba(255,255,255,0.5);">Admin</span>
+      <span style="font-size:11px;font-weight:400;color:#b8860b;margin-left:8px;">🤝 VUSANI IKHAYA PROPERTIES</span>
+    </div>
+    <div class="admin-actions">
+      <span id="adminUser" style="color:rgba(255,255,255,0.6);font-size:13px;"></span>
+      <button onclick="window.location.href='index.html'">🏠 View Site</button>
+      <button class="btn-danger" onclick="logout()">Logout</button>
+    </div>
+  </div>
+
+  <div class="admin-container">
+
+    <!-- Admin Login -->
+    <div id="adminLoginScreen">
+      <div class="login-box">
+        <h2>🔐 Admin Login</h2>
+        <p style="color:#637268;font-size:14px;">Enter your admin password to manage the platform.</p>
+        <form id="adminLoginForm">
+          <div style="margin-bottom:16px;">
+            <label style="display:block;font-weight:700;margin-bottom:4px;">Password</label>
+            <input type="password" id="adminPassword" placeholder="Enter admin password" required>
+          </div>
+          <div id="adminLoginError" class="login-error"></div>
+          <button type="submit">Log In</button>
+        </form>
+      </div>
+    </div>
+
+    <!-- Admin Content -->
+    <div id="adminContent" style="display:none;">
+
+      <!-- Stats -->
+      <div class="admin-stats">
+        <div class="admin-stat"><div class="number" id="adminStatTenants">0</div><div class="label">👥 Tenants</div></div>
+        <div class="admin-stat"><div class="number" id="adminStatLandlords">0</div><div class="label">🏠 Landlords</div></div>
+        <div class="admin-stat"><div class="number" id="adminStatOnline">0</div><div class="label">🟢 Online</div></div>
+        <div class="admin-stat"><div class="number" id="adminStatMatches">0</div><div class="label">🤝 Matches</div></div>
+        <div class="admin-stat"><div class="number" id="adminStatAppointments">0</div><div class="label">📅 Appointments</div></div>
+      </div>
+
+      <!-- Tabs -->
+      <div class="admin-tabs">
+        <button class="active" onclick="switchAdminTab('dashboard')">📊 Dashboard</button>
+        <button onclick="switchAdminTab('landlords')">🏠 Landlords <span class="count" id="adminCountLandlords">0</span></button>
+        <button onclick="switchAdminTab('tenants')">👥 Tenants <span class="count" id="adminCountTenants">0</span></button>
+        <button onclick="switchAdminTab('matches')">🤝 Matches <span class="count" id="adminCountMatches">0</span></button>
+        <button onclick="switchAdminTab('appointments')">📅 Appointments <span class="count" id="adminCountAppointments">0</span></button>
+      </div>
+
+      <!-- Dashboard Tab -->
+      <div id="adminDashboardSection" class="admin-section active">
+        <div class="admin-card">
+          <h3>📊 Overview</h3>
+          <p style="color:#637268;">Welcome to the Mtshikwana Property Match admin dashboard.</p>
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:14px;margin-top:16px;">
+            <div style="background:#f9fcfb;padding:12px;border-radius:8px;text-align:center;">
+              <div style="font-size:24px;font-weight:900;color:#0f7a5f;" id="dashPendingAppts">0</div>
+              <div style="font-size:12px;color:#637268;">⏳ Pending Appointments</div>
+            </div>
+            <div style="background:#f9fcfb;padding:12px;border-radius:8px;text-align:center;">
+              <div style="font-size:24px;font-weight:900;color:#0f7a5f;" id="dashTodayAppts">0</div>
+              <div style="font-size:12px;color:#637268;">📅 Today's Appointments</div>
+            </div>
+            <div style="background:#f9fcfb;padding:12px;border-radius:8px;text-align:center;">
+              <div style="font-size:24px;font-weight:900;color:#0f7a5f;" id="dashCompleted">0</div>
+              <div style="font-size:12px;color:#637268;">✅ Completed</div>
+            </div>
+          </div>
+        </div>
+        <div class="admin-card">
+          <h3>📅 Quick Actions</h3>
+          <div style="display:flex;gap:12px;flex-wrap:wrap;">
+            <button class="btn-nav" onclick="switchAdminTab('matches')">🔍 View Matches</button>
+            <button class="btn-nav" onclick="switchAdminTab('appointments')" style="background:#e5a638;">📅 Manage Appointments</button>
+            <button class="btn-nav" onclick="switchAdminTab('landlords')" style="background:#0f1a14;">🏠 Manage Landlords</button>
+            <a href="https://www.vusaniikhayaproperties.co.za" target="_blank" style="background:#b8860b;color:#fff;padding:10px 20px;border:none;border-radius:8px;font-weight:600;cursor:pointer;text-decoration:none;display:inline-block;">🏠 View VUSANI IKHAYA</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Landlords Tab -->
+      <div id="adminLandlordsSection" class="admin-section">
+        <div class="admin-card">
+          <div class="card-header"><h3>🏠 Landlords</h3><button class="btn-nav" onclick="openModal('landlordModal')">➕ Add Landlord</button></div>
+          <div id="adminLandlordList"></div>
+        </div>
+      </div>
+
+      <!-- Tenants Tab -->
+      <div id="adminTenantsSection" class="admin-section">
+        <div class="admin-card">
+          <div class="card-header"><h3>👥 Tenants</h3><button class="btn-nav" onclick="openModal('tenantModal')">➕ Add Tenant</button></div>
+          <div id="adminTenantList"></div>
+        </div>
+      </div>
+
+      <!-- Matches Tab -->
+      <div id="adminMatchesSection" class="admin-section">
+        <div class="admin-card">
+          <div class="card-header"><h3>🤝 Matches</h3><button class="btn-nav" onclick="generateMatches()">🔄 Generate Matches</button></div>
+          <div id="adminMatchList"></div>
+        </div>
+      </div>
+
+      <!-- Appointments Tab -->
+      <div id="adminAppointmentsSection" class="admin-section">
+        <div class="admin-card">
+          <div class="card-header"><h3>📅 Appointments</h3>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;">
+              <button class="btn-nav" onclick="filterAppointments('all')" style="background:#0f1a14;font-size:12px;padding:6px 16px;">All</button>
+              <button class="btn-nav" onclick="filterAppointments('pending')" style="background:#e5a638;font-size:12px;padding:6px 16px;">Pending</button>
+              <button class="btn-nav" onclick="filterAppointments('confirmed')" style="background:#0f7a5f;font-size:12px;padding:6px 16px;">Confirmed</button>
+              <button class="btn-nav" onclick="filterAppointments('completed')" style="background:#1e40af;font-size:12px;padding:6px 16px;">Completed</button>
+            </div>
+          </div>
+          <div id="adminAppointmentList"></div>
+        </div>
+
+        <!-- Calendar -->
+        <div class="admin-card">
+          <h3>📆 Calendar View</h3>
+          <div id="calendarContainer"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== MODALS ===== -->
+<div class="modal-overlay" id="tenantModal">
+  <div class="modal">
+    <button class="close" onclick="closeModal('tenantModal')">✕</button>
+    <h2>👥 Register as Tenant</h2>
+    <p>Tell us what you're looking for and we'll find the perfect match.</p>
+    <form id="tenantRegisterForm">
+      <div class="form-group"><label>Full Name *</label><input type="text" id="regTenantName" required></div>
+      <div class="form-group"><label>WhatsApp Number *</label><input type="text" id="regTenantWhatsApp" placeholder="068 535 3186" required></div>
+      <div class="form-group"><label>Preferred Location *</label>
+        <select id="regTenantLocation" required>
+          <option value="">Select area...</option>
+          <option value="Alexandra Township">Alexandra Township</option>
+          <option value="Tembisa">Tembisa</option>
+          <option value="Cosmo City">Cosmo City</option>
+          <option value="Plastic View">Plastic View</option>
+          <option value="Daveyton">Daveyton</option>
+          <option value="Bramley">Bramley</option>
+          <option value="Lombardy">Lombardy</option>
+          <option value="Johannesburg CBD">Johannesburg CBD</option>
+          <option value="Sandton">Sandton</option>
+          <option value="Midrand">Midrand</option>
+          <option value="Any">Any (No preference)</option>
+        </select>
+      </div>
+      <div class="form-group"><label>Maximum Budget (R) *</label><input type="number" id="regTenantBudget" placeholder="3000" required></div>
+      <div class="form-group"><label>Minimum Budget (R)</label><input type="number" id="regTenantMinBudget" placeholder="1500"></div>
+      <div class="form-group"><label>Room Type Preferred *</label>
+        <select id="regTenantRoomType" required>
+          <option value="">Select type...</option>
+          <option value="Single Room">Single Room</option>
+          <option value="Double Room">Double Room</option>
+          <option value="Shared Room">Shared Room</option>
+          <option value="Studio">Studio</option>
+          <option value="1 Bedroom">1 Bedroom</option>
+          <option value="2 Bedroom">2 Bedroom</option>
+          <option value="Backroom">Backroom</option>
+          <option value="Flat">Flat</option>
+          <option value="Any">Any</option>
+        </select>
+      </div>
+      <div class="form-group"><label>Move-in Date *</label><input type="date" id="regTenantMoveIn" required></div>
+      <div class="form-group"><label>Parking Required</label><select id="regTenantParking"><option value="No">No</option><option value="Yes">Yes</option></select></div>
+      <div class="form-group"><label>Private Bathroom Required</label><select id="regTenantPrivateBathroom"><option value="No">No</option><option value="Yes">Yes</option></select></div>
+      <div class="form-group"><label>Child Friendly Required</label><select id="regTenantChildFriendly"><option value="No">No</option><option value="Yes">Yes</option></select></div>
+      <div class="form-group"><label>Additional Notes</label><textarea id="regTenantNotes" placeholder="Any special requirements..."></textarea></div>
+      <button type="submit" class="btn-submit">✅ Register as Tenant</button>
+    </form>
+  </div>
+</div>
+
+<div class="modal-overlay" id="landlordModal">
+  <div class="modal">
+    <button class="close" onclick="closeModal('landlordModal')">✕</button>
+    <h2>🏠 List Your Property</h2>
+    <p>Reach thousands of tenants looking for a home in your area.</p>
+    <form id="landlordRegisterForm">
+      <div class="form-group"><label>Landlord Name *</label><input type="text" id="regLandlordName" required></div>
+      <div class="form-group"><label>WhatsApp Number *</label><input type="text" id="regLandlordWhatsApp" placeholder="068 535 3186" required></div>
+      <div class="form-group"><label>Contact Number</label><input type="text" id="regLandlordContact" placeholder="068 535 3186"></div>
+      <div class="form-group"><label>Property Name *</label><input type="text" id="regLandlordProperty" required></div>
+      <div class="form-group"><label>Area/Township *</label>
+        <select id="regLandlordArea" required>
+          <option value="">Select area...</option>
+          <option value="Alexandra Township">Alexandra Township</option>
+          <option value="Tembisa">Tembisa</option>
+          <option value="Cosmo City">Cosmo City</option>
+          <option value="Plastic View">Plastic View</option>
+          <option value="Daveyton">Daveyton</option>
+          <option value="Bramley">Bramley</option>
+          <option value="Lombardy">Lombardy</option>
+          <option value="Johannesburg CBD">Johannesburg CBD</option>
+          <option value="Sandton">Sandton</option>
+          <option value="Midrand">Midrand</option>
+        </select>
+      </div>
+      <div class="form-group"><label>Room Type *</label>
+        <select id="regLandlordRoomType" required>
+          <option value="">Select type...</option>
+          <option value="Single Room">Single Room</option>
+          <option value="Double Room">Double Room</option>
+          <option value="Shared Room">Shared Room</option>
+          <option value="Studio">Studio</option>
+          <option value="1 Bedroom">1 Bedroom</option>
+          <option value="2 Bedroom">2 Bedroom</option>
+          <option value="Backroom">Backroom</option>
+          <option value="Flat">Flat</option>
+        </select>
+      </div>
+      <div class="form-group"><label>Monthly Rent (R) *</label><input type="number" id="regLandlordRent" placeholder="2500" required></div>
+      <div class="form-group"><label>Deposit (R)</label><input type="number" id="regLandlordDeposit" placeholder="1000"></div>
+      <div class="form-group"><label>Available From *</label><input type="date" id="regLandlordAvailable" required></div>
+      <div class="form-group"><label>Number of Rooms Available *</label><input type="number" id="regLandlordRooms" placeholder="1" min="1" required></div>
+      <div class="form-group"><label>Parking</label><select id="regLandlordParking"><option value="No">No</option><option value="Yes">Yes</option><option value="Street">Street</option><option value="Off-street">Off-street</option></select></div>
+      <div class="form-group"><label>Bathroom</label><select id="regLandlordBathroom"><option value="Shared">Shared</option><option value="Private">Private</option></select></div>
+      <div class="form-group"><label>Child Friendly</label><select id="regLandlordChildFriendly"><option value="No">No</option><option value="Yes">Yes</option></select></div>
+      <div class="form-group"><label>Additional Notes</label><textarea id="regLandlordNotes" placeholder="Any special requirements for tenants..."></textarea></div>
+      <button type="submit" class="btn-submit">✅ List Property</button>
+    </form>
+  </div>
+</div>
+
+<div class="modal-overlay" id="appointmentModal">
+  <div class="modal">
+    <button class="close" onclick="closeModal('appointmentModal')">✕</button>
+    <h2>📅 Schedule Appointment</h2>
+    <p>Schedule a viewing between the tenant and landlord.</p>
+    <form id="appointmentForm">
+      <div class="form-group"><label>Tenant</label><input type="text" id="apptTenant" readonly></div>
+      <div class="form-group"><label>Landlord</label><input type="text" id="apptLandlord" readonly></div>
+      <div class="form-group"><label>Property</label><input type="text" id="apptProperty" readonly></div>
+      <div class="form-group"><label>Area</label><input type="text" id="apptArea" readonly></div>
+      <div class="form-group"><label>Rent (R)</label><input type="text" id="apptRent" readonly></div>
+      <div class="form-group"><label>Appointment Date *</label><input type="date" id="apptDate" required></div>
+      <div class="form-group"><label>Appointment Time *</label><input type="time" id="apptTime" required></div>
+      <div class="form-group"><label>Appointment Type</label>
+        <select id="apptType">
+          <option value="Room Viewing">Room Viewing</option>
+          <option value="Contract Signing">Contract Signing</option>
+          <option value="Key Handover">Key Handover</option>
+        </select>
+      </div>
+      <div class="form-group"><label>Notes</label><textarea id="apptNotes" placeholder="Any special instructions..."></textarea></div>
+      <input type="hidden" id="apptTenantId">
+      <input type="hidden" id="apptLandlordId">
+      <input type="hidden" id="apptMatchId">
+      <button type="submit" class="btn-submit">📅 Schedule Appointment</button>
+    </form>
+  </div>
+</div>
+
+<!-- ===== SCRIPTS ===== -->
+<script src="data.js"></script>
+<script src="admin.js"></script>
+
+</body>
+</html>
