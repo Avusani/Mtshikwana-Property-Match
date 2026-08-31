@@ -93,7 +93,7 @@ function renderAdminLandlords() {
   let html = '';
   landlords.forEach((l, i) => {
     html += `
-      <div class="list-item" style="border-left-color:${l.status === 'online' ? '#4caf8a' : '#b8493b'};">
+      <div class="list-item" style="border-left-color:${l.status === 'online' ? '#0f7a5f' : '#b8493b'};">
         <div class="info">
           <div class="name">${l.property || l.name} <span class="status-badge ${l.status === 'online' ? 'confirmed' : 'cancelled'}">${l.status === 'online' ? '🟢 Online' : '🔴 Offline'}</span></div>
           <div class="sub">📍 ${l.area || 'Unknown'} | 💰 R${l.rent || 0} | 🏠 ${l.roomType || 'Any'} | 🛏️ ${l.rooms || 0} rooms</div>
@@ -232,9 +232,9 @@ function renderAdminMatches() {
   let html = '';
   matches.slice(0, 30).forEach((m, i) => {
     html += `
-      <div class="list-item" style="border-left-color:${m.score >= 80 ? '#4caf8a' : m.score >= 60 ? '#e5a638' : '#b8493b'};">
+      <div class="list-item" style="border-left-color:${m.score >= 80 ? '#0f7a5f' : m.score >= 60 ? '#e5a638' : '#b8493b'};">
         <div class="info">
-          <div class="name">${m.tenantName} ↔ ${m.property || m.landlordName} <span style="background:#4caf8a;color:#fff;padding:2px 10px;border-radius:20px;font-size:11px;font-weight:700;">${m.score}%</span></div>
+          <div class="name">${m.tenantName} ↔ ${m.property || m.landlordName} <span style="background:#0f7a5f;color:#fff;padding:2px 10px;border-radius:20px;font-size:11px;font-weight:700;">${m.score}%</span></div>
           <div class="sub">📍 ${m.area || 'Unknown'} | 💰 R${m.rent || 0}</div>
         </div>
         <div class="actions">
@@ -283,9 +283,9 @@ function matchTenantFromAdmin(id) {
   let html = `<div style="margin-bottom:12px;"><strong>🏠 Matches for ${tenant.name}</strong> (${results.length} found)</div>`;
   results.slice(0, 10).forEach(r => {
     html += `
-      <div class="list-item" style="border-left-color:#4caf8a;">
+      <div class="list-item" style="border-left-color:#0f7a5f;">
         <div class="info">
-          <div class="name">${r.landlord.property || r.landlord.name} <span style="background:#4caf8a;color:#fff;padding:2px 10px;border-radius:20px;font-size:11px;font-weight:700;">${r.score}%</span></div>
+          <div class="name">${r.landlord.property || r.landlord.name} <span style="background:#0f7a5f;color:#fff;padding:2px 10px;border-radius:20px;font-size:11px;font-weight:700;">${r.score}%</span></div>
           <div class="sub">📍 ${r.landlord.area} | 💰 R${r.landlord.rent}</div>
         </div>
         <div class="actions">
@@ -367,7 +367,7 @@ function renderAdminAppointments() {
     const tenant = tenants.find(t => t.id === a.tenantId);
     const landlord = landlords.find(l => l.id === a.landlordId);
     html += `
-      <div class="list-item" style="border-left-color:${a.status === 'confirmed' ? '#4caf8a' : a.status === 'completed' ? '#1e40af' : a.status === 'cancelled' ? '#b8493b' : '#e5a638'};">
+      <div class="list-item" style="border-left-color:${a.status === 'confirmed' ? '#0f7a5f' : a.status === 'completed' ? '#1e40af' : a.status === 'cancelled' ? '#b8493b' : '#e5a638'};">
         <div class="info">
           <div class="name">${a.tenantName} ↔ ${a.property} <span class="status-badge ${statusClass}">${a.status.toUpperCase()}</span></div>
           <div class="sub">📅 ${new Date(a.date).toLocaleDateString()} at ${a.time} | 📍 ${a.area} | 💰 R${a.rent}</div>
@@ -455,33 +455,4 @@ function changeMonth(delta) {
   if (currentCalendarMonth > 11) {
     currentCalendarMonth = 0;
     currentCalendarYear++;
-  } else if (currentCalendarMonth < 0) {
-    currentCalendarMonth = 11;
-    currentCalendarYear--;
-  }
-  renderCalendar();
-}
-
-function showAppointmentsForDate(date) {
-  const dayAppts = appointments.filter(a => a.date === date);
-  if (dayAppts.length === 0) return;
-  let msg = `📅 Appointments for ${new Date(date).toLocaleDateString()}:\n\n`;
-  dayAppts.forEach(a => {
-    msg += `${a.time} - ${a.tenantName} ↔ ${a.property} (${a.status})\n`;
-  });
-  alert(msg);
-}
-
-// ========================================
-// INITIALIZATION
-// ========================================
-document.addEventListener('DOMContentLoaded', function() {
-  loadData();
-  if (sessionStorage.getItem(SESSION_KEY) === 'yes') {
-    adminToken = 'admin-session-token';
-    document.getElementById('adminLoginScreen').style.display = 'none';
-    document.getElementById('adminContent').style.display = 'block';
-    document.getElementById('adminUser').textContent = '👤 Admin';
-    loadAdminData();
-  }
-});
+  } else if (currentCalendarMonth < 
