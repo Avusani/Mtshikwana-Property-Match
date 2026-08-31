@@ -27,7 +27,6 @@ function closeModal(id) {
   document.body.style.overflow = '';
 }
 
-// Close modals on outside click
 document.querySelectorAll('.modal-overlay').forEach(el => {
   el.addEventListener('click', function(e) {
     if (e.target === this) {
@@ -55,7 +54,7 @@ function searchProperties() {
   renderProperties(results);
   if (results.length === 0) {
     document.getElementById('propertyGrid').innerHTML = `
-      <div class="empty" style="grid-column:1/-1;">
+      <div style="grid-column:1/-1;color:#637268;text-align:center;padding:40px;">
         🔍 No properties found matching your criteria.
         <br><span style="font-size:13px;">Try adjusting your search or <a href="https://www.vusaniikhayaproperties.co.za" target="_blank" style="color:#b8860b;">view all rooms on VUSANI IKHAYA PROPERTIES</a></span>
       </div>
@@ -70,7 +69,7 @@ function renderProperties(list) {
   const grid = document.getElementById('propertyGrid');
   if (!list || list.length === 0) {
     grid.innerHTML = `
-      <div class="empty" style="grid-column:1/-1;">
+      <div style="grid-column:1/-1;color:#637268;text-align:center;padding:40px;">
         🏠 No properties available right now.
         <br><span style="font-size:13px;">Check back soon or <a href="https://www.vusaniikhayaproperties.co.za" target="_blank" style="color:#b8860b;">view all rooms on VUSANI IKHAYA PROPERTIES</a></span>
       </div>
@@ -81,7 +80,7 @@ function renderProperties(list) {
   list.forEach(l => {
     html += `
       <div class="property-card">
-        <div class="image">🏠<span class="status-badge">🟢 Available</span></div>
+        <div class="image">🏠</div>
         <div class="body">
           <div class="title">${l.property || l.name}</div>
           <div class="location">📍 ${l.area || 'Unknown'} | 👤 ${l.name}</div>
