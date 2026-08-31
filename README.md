@@ -6,39 +6,37 @@ Mtshikwana Property Match is a complete property matching platform that connects
 
 ## 🌟 Features
 
-### 🏠 Public Website
-- **Property Search** - Search by location and budget
-- **Tenant Registration** - Full profile with preferences
-- **Landlord Registration** - List properties with details
-- **Property Listings** - Browse available rooms
-- **WhatsApp Integration** - One-click contact landlords
-- **Partner Branding** - VUSANI IKHAYA PROPERTIES integration
+### Public Website
+- Property Search by location and budget
+- Tenant Registration with full preferences
+- Landlord Registration with property details
+- Property Listings with WhatsApp contact
+- Partner branding with VUSANI IKHAYA PROPERTIES
 
-### 🔐 Admin Dashboard
-- **Secure Login** - Password: `Khanya0901@2`
-- **Stats Overview** - Tenants, landlords, matches, appointments
-- **Landlord Management** - View, toggle ONLINE/OFFLINE, delete
-- **Tenant Management** - View, delete, match rooms
-- **Match Engine** - Generate and view matches with scores
-- **Appointments** - Schedule, confirm, complete, cancel
-- **Calendar View** - See appointments by date
-- **WhatsApp Integration** - One-click messages for matches and appointments
+### Admin Dashboard
+- Secure Login: Password `Khanya0901@2`
+- Stats Overview: Tenants, Landlords, Matches, Appointments
+- Landlord Management: Toggle ONLINE/OFFLINE, Delete
+- Tenant Management: View, Delete, Match Rooms
+- Match Engine: Generate and view matches with scores
+- Appointment System: Schedule, Confirm, Complete, Cancel
+- Calendar View: See appointments by date
+- WhatsApp Integration: One-click contact
 
-### 📅 Appointment System
-- **Schedule Viewings** - From match results
-- **Status Management** - Pending → Confirmed → Completed/Cancelled
-- **WhatsApp Notifications** - Auto-generated messages
-- **Calendar View** - Visual appointment tracking
+## 🚀 Deployment on Railway
 
-### 💬 WhatsApp Integration
-- Pre-filled messages for tenants and landlords
-- Auto-inserts names, dates, times, locations, and rent
-- One-click contact for matches and appointments
+### Step 1: Create Repository on GitHub
 
-## 🚀 Deployment
+1. Go to https://github.com/new
+2. Name: `mtshikwana-property-match`
+3. Create repository
 
-### Deploy on Railway
+### Step 2: Push Files to GitHub
 
-1. **Fork/Clone this repository to GitHub**
-
-2. **Connect to Railway**
+```bash
+git clone https://github.com/YOUR_USERNAME/mtshikwana-property-match.git
+cd mtshikwana-property-match
+# Copy all files into this folder
+git add .
+git commit -m "Initial commit"
+git push origin main
