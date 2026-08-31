@@ -1,0 +1,422 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Mtshikwana Property Match - Find Your Perfect Home</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    /* ===== ADDED COLORS & STYLES ===== */
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      background: #f0f7f4;
+      color: #17201b;
+      line-height: 1.6;
+    }
+    a { text-decoration: none; color: inherit; cursor: pointer; }
+    .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+
+    /* ===== TOPBAR ===== */
+    .topbar {
+      background: #0f1a14;
+      color: #fff;
+      padding: 14px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    }
+    .topbar .brand { font-weight: 900; font-size: 22px; letter-spacing: -0.5px; }
+    .topbar .brand span { color: #4caf8a; }
+    .topbar .brand small { display: block; font-size: 11px; font-weight: 400; color: rgba(255,255,255,0.6); margin-top: 2px; }
+    .topbar .nav-links { display: flex; gap: 16px; align-items: center; flex-wrap: wrap; }
+    .topbar .nav-links a { color: rgba(255,255,255,0.8); font-size: 14px; font-weight: 500; transition: color 0.2s; padding: 6px 0; border-bottom: 2px solid transparent; }
+    .topbar .nav-links a:hover, .topbar .nav-links a.active { color: #fff; border-bottom-color: #4caf8a; }
+    .btn-nav { background: #0f7a5f; color: #fff; padding: 8px 20px; border-radius: 8px; font-weight: 600; font-size: 13px; border: none; cursor: pointer; transition: background 0.2s; }
+    .btn-nav:hover { background: #095741; }
+    .btn-nav-outline { background: transparent; border: 1px solid rgba(255,255,255,0.3); color: #fff; padding: 8px 20px; border-radius: 8px; font-weight: 600; font-size: 13px; cursor: pointer; transition: all 0.2s; }
+    .btn-nav-outline:hover { background: rgba(255,255,255,0.1); border-color: #4caf8a; }
+    .btn-vusani { background: #b8860b; color: #fff; padding: 8px 20px; border-radius: 8px; font-weight: 700; font-size: 13px; border: none; cursor: pointer; transition: background 0.2s; box-shadow: 0 4px 10px rgba(184, 134, 11, 0.3); }
+    .btn-vusani:hover { background: #9a7209; }
+    .mobile-toggle { display: none; background: none; border: none; color: #fff; font-size: 24px; cursor: pointer; }
+
+    /* ===== HERO ===== */
+    .hero {
+      background: linear-gradient(135deg, #0f1a14 0%, #1a3a28 50%, #0f1a14 100%);
+      color: #fff;
+      padding: 80px 20px 60px;
+      text-align: center;
+      position: relative;
+    }
+    .partner-badge { display: inline-block; background: rgba(184, 134, 11, 0.2); border: 1px solid #b8860b; padding: 6px 20px; border-radius: 30px; font-size: 12px; color: #e0a818; margin-bottom: 20px; font-weight: 600; }
+    .hero h1 { font-size: 48px; font-weight: 900; margin-bottom: 16px; text-shadow: 0 2px 10px rgba(0,0,0,0.3); }
+    .hero h1 span { color: #4caf8a; }
+    .hero p { font-size: 20px; color: rgba(255,255,255,0.8); max-width: 600px; margin: 0 auto 20px; }
+    .partner-text { font-size: 14px; color: rgba(255,255,255,0.6); max-width: 500px; margin: 0 auto 30px; }
+    .search-box { display: flex; max-width: 600px; margin: 0 auto; background: #fff; border-radius: 12px; overflow: hidden; box-shadow: 0 8px 24px rgba(0,0,0,0.2); }
+    .search-box select, .search-box input { flex: 1; padding: 16px 20px; border: none; font-size: 16px; outline: none; min-width: 0; background: #fff; color: #17201b; border-right: 1px solid #e0e0e0; }
+    .search-box button { padding: 16px 30px; background: #0f7a5f; color: #fff; border: none; font-weight: 700; font-size: 16px; cursor: pointer; transition: background 0.2s; white-space: nowrap; }
+    .search-box button:hover { background: #095741; }
+    .stats-bar { display: flex; justify-content: center; gap: 40px; margin-top: 40px; flex-wrap: wrap; }
+    .stats-bar .stat .number { font-size: 32px; font-weight: 900; color: #4caf8a; }
+    .stats-bar .stat .label { font-size: 13px; color: rgba(255,255,255,0.6); }
+    .view-rooms-btn { display: inline-block; margin-top: 30px; padding: 14px 40px; background: #b8860b; color: #fff; border-radius: 10px; font-weight: 700; font-size: 18px; border: none; cursor: pointer; transition: background 0.2s; text-decoration: none; box-shadow: 0 4px 15px rgba(184, 134, 11, 0.4); }
+    .view-rooms-btn:hover { background: #9a7209; }
+    .view-rooms-btn i { margin-right: 10px; }
+
+    /* ===== SECTIONS ===== */
+    .section { padding: 60px 20px; }
+    .section-title { text-align: center; font-size: 32px; font-weight: 800; color: #17201b; margin-bottom: 12px; }
+    .section-subtitle { text-align: center; color: #637268; font-size: 16px; margin-bottom: 36px; }
+    .bg-light { background: #eaf3ee; }
+
+    /* ===== PARTNER SECTION ===== */
+    .partner-section { background: linear-gradient(135deg, #fffaeb 0%, #fff4d6 100%); border-top: 3px solid #b8860b; border-bottom: 3px solid #b8860b; }
+    .partner-logo { display: flex; align-items: center; justify-content: center; gap: 20px; flex-wrap: wrap; }
+    .partner-logo .divider { font-size: 30px; color: #b8860b; font-weight: 300; }
+    .partner-logo .brand-name { font-size: 28px; font-weight: 900; color: #17201b; }
+    .brand-name .gold { color: #b8860b; }
+    .brand-name .green { color: #0f7a5f; }
+
+    /* ===== PROPERTIES ===== */
+    .property-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 24px; max-width: 1200px; margin: 0 auto; }
+    .property-card { background: #fff; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.08); border: 1px solid #dce5e0; transition: transform 0.3s; }
+    .property-card:hover { transform: translateY(-5px); box-shadow: 0 8px 25px rgba(0,0,0,0.12); }
+    .property-card .image { height: 200px; background: #eaf3ee; display: flex; align-items: center; justify-content: center; font-size: 48px; color: #8a9b91; position: relative; }
+    .property-card .body { padding: 20px; }
+    .property-card .title { font-size: 18px; font-weight: 700; color: #17201b; margin-bottom: 4px; }
+    .property-card .location { font-size: 13px; color: #637268; margin-bottom: 8px; }
+    .property-card .price { font-size: 22px; font-weight: 900; color: #0f7a5f; }
+    .property-card .price span { font-size: 14px; font-weight: 400; color: #637268; }
+    .property-card .details { display: flex; gap: 16px; margin: 12px 0; font-size: 13px; color: #637268; flex-wrap: wrap; }
+    .property-card .details i { margin-right: 4px; color: #0f7a5f; }
+    .btn-details { display: inline-block; padding: 8px 24px; background: #0f7a5f; color: #fff; border-radius: 8px; font-weight: 600; font-size: 14px; border: none; cursor: pointer; transition: background 0.2s; text-decoration: none; }
+    .btn-details:hover { background: #095741; }
+
+    /* ===== STEPS ===== */
+    .steps-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 30px; text-align: center; max-width: 1200px; margin: 0 auto; }
+    .step { background: #fff; padding: 24px; border-radius: 12px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); border: 1px solid #e0e8e4; }
+    .step .icon { font-size: 48px; margin-bottom: 12px; display: block; color: #b8860b; }
+    .step h4 { font-size: 18px; margin-bottom: 4px; color: #17201b; }
+    .step p { font-size: 14px; color: #637268; }
+
+    /* ===== FOOTER ===== */
+    .footer { background: #0f1a14; color: rgba(255,255,255,0.7); padding: 40px 20px 20px; }
+    .footer-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 30px; max-width: 1200px; margin: 0 auto; }
+    .footer h4 { color: #fff; margin-bottom: 12px; font-size: 16px; }
+    .footer .gold { color: #e0a818; }
+    .footer a { display: block; font-size: 14px; margin-bottom: 6px; color: rgba(255,255,255,0.6); transition: color 0.2s; }
+    .footer a:hover { color: #4caf8a; }
+    .footer .bottom { text-align: center; padding-top: 20px; margin-top: 20px; border-top: 1px solid rgba(255,255,255,0.08); font-size: 13px; }
+
+    /* ===== MODALS ===== */
+    .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 2000; align-items: center; justify-content: center; padding: 20px; backdrop-filter: blur(4px); }
+    .modal-overlay.show { display: flex; }
+    .modal { background: #fff; border-radius: 14px; max-width: 520px; width: 100%; max-height: 95vh; overflow-y: auto; padding: 32px; position: relative; box-shadow: 0 20px 50px rgba(0,0,0,0.3); }
+    .modal .close { position: absolute; top: 12px; right: 16px; font-size: 28px; cursor: pointer; color: #637268; background: none; border: none; transition: color 0.2s; }
+    .modal .close:hover { color: #b8493b; }
+    .modal h2 { color: #17201b; font-size: 24px; margin-bottom: 8px; }
+    .modal p { color: #637268; font-size: 14px; margin-bottom: 20px; }
+    .form-group { margin-bottom: 16px; }
+    .form-group label { display: block; font-weight: 600; font-size: 13px; margin-bottom: 4px; color: #17201b; }
+    .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 10px 14px; border: 1px solid #dce5e0; border-radius: 8px; font-size: 14px; font-family: inherit; transition: border 0.2s; background: #f9fcfb; }
+    .form-group input:focus, .form-group select:focus, .form-group textarea:focus { border-color: #0f7a5f; outline: none; box-shadow: 0 0 0 3px rgba(15, 122, 95, 0.1); }
+    .form-group textarea { min-height: 80px; resize: vertical; }
+    .btn-submit { width: 100%; padding: 14px; background: #0f7a5f; color: #fff; border: none; border-radius: 8px; font-size: 16px; font-weight: 700; cursor: pointer; transition: background 0.2s; margin-top: 10px; }
+    .btn-submit:hover { background: #095741; }
+
+    /* ===== RESPONSIVE ===== */
+    @media (max-width: 768px) {
+      .topbar .nav-links { display: none; width: 100%; flex-direction: column; align-items: stretch; padding-top: 12px; }
+      .topbar .nav-links.open { display: flex; }
+      .mobile-toggle { display: block; }
+      .hero h1 { font-size: 32px; }
+      .hero .search-box { flex-direction: column; }
+      .hero .search-box button { border-radius: 0 0 12px 12px; }
+      .stats-bar { gap: 20px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ===== TOPBAR ===== -->
+<header class="topbar">
+  <div class="brand">
+    🏠 Mtshikwana <span>Property Match</span>
+    <small>Working hand in hand with <span style="color:#b8860b;">VUSANI IKHAYA PROPERTIES</span></small>
+  </div>
+  <button class="mobile-toggle" onclick="toggleMobileNav()">☰</button>
+  <nav class="nav-links" id="navLinks">
+    <a class="active" onclick="showSection('home')">Home</a>
+    <a onclick="showSection('properties')">Properties</a>
+    <a onclick="showSection('about')">About</a>
+    <a onclick="showSection('contact')">Contact</a>
+    <button class="btn-nav" onclick="openModal('tenantModal')">👥 I'm a Tenant</button>
+    <button class="btn-nav-outline" onclick="openModal('landlordModal')">🏠 I'm a Landlord</button>
+    <button class="btn-vusani" onclick="window.open('https://www.vusaniikhayaproperties.co.za','_blank')">
+      🏠 View Rooms
+    </button>
+    <button class="btn-nav-outline" style="border-color:#4caf8a;color:#4caf8a;" onclick="window.location.href='admin.html'">🔐 Admin</button>
+  </nav>
+</header>
+
+<!-- ===== HERO ===== -->
+<section class="hero" id="homeSection">
+  <div class="partner-badge">🤝 Working with VUSANI IKHAYA PROPERTIES</div>
+  <h1>Find Your <span>Perfect Match</span></h1>
+  <p>Connecting the right tenants with the right landlords.</p>
+  <p class="partner-text">Mtshikwana Property Match works hand in hand with <strong style="color:#b8860b;">VUSANI IKHAYA PROPERTIES</strong> to help tenants find suitable rooms and landlords connect with suitable tenants.</p>
+  
+  <div class="search-box">
+    <select id="searchArea">
+      <option value="">📍 Select Area</option>
+      <option value="Alexandra Township">Alexandra Township</option>
+      <option value="Tembisa">Tembisa</option>
+      <option value="Cosmo City">Cosmo City</option>
+      <option value="Plastic View">Plastic View</option>
+      <option value="Daveyton">Daveyton</option>
+      <option value="Bramley">Bramley</option>
+      <option value="Lombardy">Lombardy</option>
+      <option value="Johannesburg CBD">Johannesburg CBD</option>
+      <option value="Sandton">Sandton</option>
+      <option value="Midrand">Midrand</option>
+    </select>
+    <input type="number" id="searchBudget" placeholder="💰 Max Budget (R)">
+    <button onclick="searchProperties()">🔍 Search</button>
+  </div>
+
+  <a href="https://www.vusaniikhayaproperties.co.za" target="_blank" class="view-rooms-btn">
+    <i class="fas fa-building"></i> VIEW AVAILABLE ROOMS
+  </a>
+
+  <div class="stats-bar">
+    <div class="stat"><div class="number" id="statTotalRooms">0</div><div class="label">Available Rooms</div></div>
+    <div class="stat"><div class="number" id="statTotalLandlords">0</div><div class="label">Active Landlords</div></div>
+    <div class="stat"><div class="number" id="statTotalTenants">0</div><div class="label">Happy Tenants</div></div>
+    <div class="stat"><div class="number" id="statMatches">0</div><div class="label">Matches Made</div></div>
+  </div>
+</section>
+
+<!-- ===== PARTNER SECTION ===== -->
+<section class="section partner-section">
+  <div class="container">
+    <div class="partner-logo">
+      <div class="brand-name">
+        <span class="gold">VUSANI</span> <span class="green">IKHAYA</span> <span class="gold">PROPERTIES</span>
+      </div>
+      <div class="divider">🤝</div>
+      <div class="brand-name">
+        Mtshikwana <span class="gold">Property Match</span>
+      </div>
+    </div>
+    <p style="text-align:center;margin-top:16px;color:#637268;font-size:16px;">
+      <strong>Working hand in hand</strong> to connect tenants with their perfect home.
+    </p>
+  </div>
+</section>
+
+<!-- ===== PROPERTIES ===== -->
+<section class="section bg-light" id="propertiesSection">
+  <div class="container">
+    <h2 class="section-title">🏠 Available Properties</h2>
+    <p class="section-subtitle">Browse through our verified listings and find your perfect home.</p>
+    <div class="property-grid" id="propertyGrid"></div>
+    <div style="text-align:center;margin-top:30px;">
+      <a href="https://www.vusaniikhayaproperties.co.za" target="_blank" class="btn-vusani" style="display:inline-block;padding:14px 40px;background:#b8860b;color:#fff;border-radius:10px;font-weight:700;font-size:16px;border:none;cursor:pointer;text-decoration:none;">
+        <i class="fas fa-building"></i> VIEW ALL ROOMS ON VUSANI IKHAYA
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ===== HOW IT WORKS ===== -->
+<section class="section" id="aboutSection">
+  <div class="container">
+    <h2 class="section-title">How It Works</h2>
+    <p class="section-subtitle">Simple, fast, and transparent - we make finding a home easy.</p>
+    <div class="steps-grid">
+      <div class="step"><span class="icon">📝</span><h4>1. Register</h4><p>Tenants tell us what they need. Landlords list their rooms.</p></div>
+      <div class="step"><span class="icon">🔍</span><h4>2. Match</h4><p>Our smart engine finds the best matches based on location and preferences.</p></div>
+      <div class="step"><span class="icon">📅</span><h4>3. Schedule</h4><p>Schedule viewings and manage appointments.</p></div>
+      <div class="step"><span class="icon">🏠</span><h4>4. Move In</h4><p>You find your perfect home. We make it happen.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== CONTACT ===== -->
+<section class="section bg-light" id="contactSection">
+  <div class="container">
+    <h2 class="section-title">📞 Contact Us</h2>
+    <p class="section-subtitle">Have questions? We're here to help you find your perfect match.</p>
+    <div style="max-width:500px;margin:0 auto;text-align:center;">
+      <p style="font-size:18px;"><strong>📱 WhatsApp:</strong> <a href="https://wa.me/27685353186" style="color:#4caf8a;">068 535 3186</a></p>
+      <p style="font-size:18px;"><strong>📧 Email:</strong> <a href="mailto:avukilerooms@gmail.com" style="color:#4caf8a;">avukilerooms@gmail.com</a></p>
+      <div style="margin-top:16px;padding:16px;background:#f8f4e8;border-radius:10px;border:1px solid #b8860b;">
+        <p style="font-size:14px;color:#637268;">
+          <strong style="color:#b8860b;">🏠 View Available Rooms</strong><br>
+          To view available rooms and property listings, visit:<br>
+          <a href="https://www.vusaniikhayaproperties.co.za" target="_blank" style="color:#b8860b;font-weight:700;font-size:16px;">
+            www.vusaniikhayaproperties.co.za
+          </a>
+        </p>
+      </div>
+      <div style="margin-top:20px;display:flex;gap:12px;justify-content:center;flex-wrap:wrap;">
+        <button class="btn-nav" onclick="openModal('tenantModal')" style="background:#4caf8a;color:#fff;padding:12px 30px;border:none;border-radius:8px;font-weight:700;cursor:pointer;">I'm a Tenant</button>
+        <button class="btn-nav-outline" onclick="openModal('landlordModal')" style="background:transparent;border:2px solid #4caf8a;color:#4caf8a;padding:12px 30px;border-radius:8px;font-weight:700;cursor:pointer;">I'm a Landlord</button>
+        <a href="https://www.vusaniikhayaproperties.co.za" target="_blank" class="btn-vusani" style="display:inline-block;padding:12px 30px;background:#b8860b;color:#fff;border-radius:8px;font-weight:700;font-size:14px;border:none;cursor:pointer;text-decoration:none;">
+          🏠 View Rooms
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== FOOTER ===== -->
+<footer class="footer">
+  <div class="footer-grid">
+    <div>
+      <h4>🏠 Mtshikwana Property Match</h4>
+      <p style="font-size:14px;color:rgba(255,255,255,0.5);">
+        Working hand in hand with <span class="gold">VUSANI IKHAYA PROPERTIES</span>
+      </p>
+    </div>
+    <div>
+      <h4>Quick Links</h4>
+      <a onclick="showSection('home')">Home</a>
+      <a onclick="showSection('properties')">Properties</a>
+      <a onclick="showSection('about')">About</a>
+      <a onclick="showSection('contact')">Contact</a>
+    </div>
+    <div>
+      <h4>Contact</h4>
+      <a href="https://wa.me/27685353186">📱 068 535 3186</a>
+      <a href="mailto:avukilerooms@gmail.com">📧 avukilerooms@gmail.com</a>
+    </div>
+    <div>
+      <h4>View Rooms</h4>
+      <a href="https://www.vusaniikhayaproperties.co.za" target="_blank" style="color:#b8860b;">
+        🏠 www.vusaniikhayaproperties.co.za
+      </a>
+      <a href="admin.html">🔐 Admin Dashboard</a>
+    </div>
+  </div>
+  <div class="bottom">
+    &copy; 2026 Mtshikwana Property Match. Working hand in hand with <span class="gold">VUSANI IKHAYA PROPERTIES</span>.
+  </div>
+</footer>
+
+<!-- ===== TENANT MODAL ===== -->
+<div class="modal-overlay" id="tenantModal">
+  <div class="modal">
+    <button class="close" onclick="closeModal('tenantModal')">✕</button>
+    <h2>👥 Register as Tenant</h2>
+    <p>Tell us what you're looking for and we'll find the perfect match.</p>
+    <form id="tenantRegisterForm">
+      <div class="form-group"><label>Full Name *</label><input type="text" id="regTenantName" required></div>
+      <div class="form-group"><label>WhatsApp Number *</label><input type="text" id="regTenantWhatsApp" placeholder="068 535 3186" required></div>
+      <div class="form-group"><label>Preferred Location *</label>
+        <select id="regTenantLocation" required>
+          <option value="">Select area...</option>
+          <option value="Alexandra Township">Alexandra Township</option>
+          <option value="Tembisa">Tembisa</option>
+          <option value="Cosmo City">Cosmo City</option>
+          <option value="Plastic View">Plastic View</option>
+          <option value="Daveyton">Daveyton</option>
+          <option value="Bramley">Bramley</option>
+          <option value="Lombardy">Lombardy</option>
+          <option value="Johannesburg CBD">Johannesburg CBD</option>
+          <option value="Sandton">Sandton</option>
+          <option value="Midrand">Midrand</option>
+          <option value="Any">Any (No preference)</option>
+        </select>
+      </div>
+      <div class="form-group"><label>Maximum Budget (R) *</label><input type="number" id="regTenantBudget" placeholder="3000" required></div>
+      <div class="form-group"><label>Minimum Budget (R)</label><input type="number" id="regTenantMinBudget" placeholder="1500"></div>
+      <div class="form-group"><label>Room Type Preferred *</label>
+        <select id="regTenantRoomType" required>
+          <option value="">Select type...</option>
+          <option value="Single Room">Single Room</option>
+          <option value="Double Room">Double Room</option>
+          <option value="Shared Room">Shared Room</option>
+          <option value="Studio">Studio</option>
+          <option value="1 Bedroom">1 Bedroom</option>
+          <option value="2 Bedroom">2 Bedroom</option>
+          <option value="Backroom">Backroom</option>
+          <option value="Flat">Flat</option>
+          <option value="Any">Any</option>
+        </select>
+      </div>
+      <div class="form-group"><label>Move-in Date *</label><input type="date" id="regTenantMoveIn" required></div>
+      <div class="form-group"><label>Parking Required</label><select id="regTenantParking"><option value="No">No</option><option value="Yes">Yes</option></select></div>
+      <div class="form-group"><label>Private Bathroom Required</label><select id="regTenantPrivateBathroom"><option value="No">No</option><option value="Yes">Yes</option></select></div>
+      <div class="form-group"><label>Child Friendly Required</label><select id="regTenantChildFriendly"><option value="No">No</option><option value="Yes">Yes</option></select></div>
+      <div class="form-group"><label>Additional Notes</label><textarea id="regTenantNotes" placeholder="Any special requirements..."></textarea></div>
+      <button type="submit" class="btn-submit">✅ Register as Tenant</button>
+    </form>
+  </div>
+</div>
+
+<!-- ===== LANDLORD MODAL ===== -->
+<div class="modal-overlay" id="landlordModal">
+  <div class="modal">
+    <button class="close" onclick="closeModal('landlordModal')">✕</button>
+    <h2>🏠 List Your Property</h2>
+    <p>Reach thousands of tenants looking for a home in your area.</p>
+    <form id="landlordRegisterForm">
+      <div class="form-group"><label>Landlord Name *</label><input type="text" id="regLandlordName" required></div>
+      <div class="form-group"><label>WhatsApp Number *</label><input type="text" id="regLandlordWhatsApp" placeholder="068 535 3186" required></div>
+      <div class="form-group"><label>Contact Number</label><input type="text" id="regLandlordContact" placeholder="068 535 3186"></div>
+      <div class="form-group"><label>Property Name *</label><input type="text" id="regLandlordProperty" required></div>
+      <div class="form-group"><label>Area/Township *</label>
+        <select id="regLandlordArea" required>
+          <option value="">Select area...</option>
+          <option value="Alexandra Township">Alexandra Township</option>
+          <option value="Tembisa">Tembisa</option>
+          <option value="Cosmo City">Cosmo City</option>
+          <option value="Plastic View">Plastic View</option>
+          <option value="Daveyton">Daveyton</option>
+          <option value="Bramley">Bramley</option>
+          <option value="Lombardy">Lombardy</option>
+          <option value="Johannesburg CBD">Johannesburg CBD</option>
+          <option value="Sandton">Sandton</option>
+          <option value="Midrand">Midrand</option>
+        </select>
+      </div>
+      <div class="form-group"><label>Room Type *</label>
+        <select id="regLandlordRoomType" required>
+          <option value="">Select type...</option>
+          <option value="Single Room">Single Room</option>
+          <option value="Double Room">Double Room</option>
+          <option value="Shared Room">Shared Room</option>
+          <option value="Studio">Studio</option>
+          <option value="1 Bedroom">1 Bedroom</option>
+          <option value="2 Bedroom">2 Bedroom</option>
+          <option value="Backroom">Backroom</option>
+          <option value="Flat">Flat</option>
+        </select>
+      </div>
+      <div class="form-group"><label>Monthly Rent (R) *</label><input type="number" id="regLandlordRent" placeholder="2500" required></div>
+      <div class="form-group"><label>Deposit (R)</label><input type="number" id="regLandlordDeposit" placeholder="1000"></div>
+      <div class="form-group"><label>Available From *</label><input type="date" id="regLandlordAvailable" required></div>
+      <div class="form-group"><label>Number of Rooms Available *</label><input type="number" id="regLandlordRooms" placeholder="1" min="1" required></div>
+      <div class="form-group"><label>Parking</label><select id="regLandlordParking"><option value="No">No</option><option value="Yes">Yes</option><option value="Street">Street</option><option value="Off-street">Off-street</option></select></div>
+      <div class="form-group"><label>Bathroom</label><select id="regLandlordBathroom"><option value="Shared">Shared</option><option value="Private">Private</option></select></div>
+      <div class="form-group"><label>Child Friendly</label><select id="regLandlordChildFriendly"><option value="No">No</option><option value="Yes">Yes</option></select></div>
+      <div class="form-group"><label>Additional Notes</label><textarea id="regLandlordNotes" placeholder="Any special requirements for tenants..."></textarea></div>
+      <button type="submit" class="btn-submit">✅ List Property</button>
+    </form>
+  </div>
+</div>
+
+<!-- ===== SCRIPTS ===== -->
+<script src="data.js"></script>
+<script src="app.js"></script>
+
+</body>
+</html>
