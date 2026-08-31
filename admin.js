@@ -455,4 +455,51 @@ function changeMonth(delta) {
   if (currentCalendarMonth > 11) {
     currentCalendarMonth = 0;
     currentCalendarYear++;
-  } else if (currentCalendarMonth < 
+  } else if (currentCalendarMonth < 0) {
+    currentCalendarMonth = 11;
+    currentCalendarYear--;
+  }
+  renderCalendar();
+}
+
+function showAppointmentsForDate(date) {
+  const dayAppts = appointments.filter(a => a.date === date);
+  if (dayAppts.length === 0) return;
+  let msg = `📅 Appointments for ${new Date(date).toLocaleDateString()}:\n\n`;
+  dayAppts.forEach(a => {
+    msg += `${a.time} - ${a.tenantName} ↔ ${a.property} (${a.status})\n`;
+  });
+  alert(msg);
+}
+
+// ========================================
+// INITIALIZATION
+// ========================================
+document.addEventListener('DOMContentLoaded', function() {
+  loadData();
+  if (sessionStorage.getItem(SESSION_KEY) === 'yes') {
+    adminToken = 'admin-session-token';
+    document.getElementById('adminLoginScreen').style.display = 'none';
+    document.getElementById('adminContent').style.display = 'block';
+    document.getElementById('adminUser').textContent = '👤 Admin';
+    loadAdminData();
+  }
+});
+
+// Make functions globally accessible
+window.openModal = openModal;
+window.closeModal = closeModal;
+window.toggleMobileNav = toggleMobileNav;
+window.showSection = showSection;
+window.searchProperties = searchProperties;
+window.switchAdminTab = switchAdminTab;
+window.generateMatches = generateMatches;
+window.filterAppointments = filterAppointments;
+window.scheduleAppointment = scheduleAppointment;
+window.updateAppointmentStatus = updateAppointmentStatus;
+window.changeMonth = changeMonth;
+window.toggleLandlordStatus = toggleLandlordStatus;
+window.deleteLandlord = deleteLandlord;
+window.deleteTenant = deleteTenant;
+window.matchTenantFromAdmin = matchTenantFromAdmin;
+window.logout = logout;
