@@ -10,6 +10,14 @@ app.use(cors());
 app.use(express.json());
 app.use(express.static(path.join(__dirname)));
 
+// In-memory data store (for Railway deployment)
+let appData = {
+  landlords: [],
+  tenants: [],
+  matches: [],
+  appointments: []
+};
+
 // Serve index.html
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'index.html'));
@@ -24,8 +32,10 @@ app.get('/admin', (req, res) => {
 app.post('/api/sync', (req, res) => {
   try {
     const data = req.body;
-    // Store data in memory (in production, use a database)
-    global.mtshikwanaData = data;
+    if (data.landlords) appData.landlords = data.landlords;
+    if (data.tenants) appData.tenants = data.tenants;
+    if (data.matches) appData.matches = data.matches;
+    if (data.appointments) appData.appointments = data.appointments;
     res.json({ success: true, message: 'Data synced successfully' });
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -34,10 +44,26 @@ app.post('/api/sync', (req, res) => {
 
 app.get('/api/data', (req, res) => {
   try {
-    const data = global.mtshikwanaData || { landlords: [], tenants: [], matches: [], appointments: [] };
-    res.json(data);
+    res.json(appData);
   } catch (error) {
     res.status(500).json({ error: error.message });
+  }
+});
+
+// Admin login endpoint
+app.post('/api/admin/login', (req, res) => {
+  const { password } = req.body;
+  if (password === 'Khanya0901@2') {
+    res.json({ 
+      success: true, 
+      token: 'admin-token-2026',
+      message: 'Login successful'
+    });
+  } else {
+    res.status(401).json({ 
+      success: false, 
+      error: 'Invalid password' 
+    });
   }
 });
 
