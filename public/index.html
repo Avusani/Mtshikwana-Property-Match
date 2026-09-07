@@ -1,0 +1,287 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Mtshikwana Property Match - Find Your Perfect Home</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<!-- ===== TOPBAR ===== -->
+<header class="topbar">
+  <div class="brand">
+    🏠 Mtshikwana <span>Property Match</span>
+    <small>Working hand in hand with <span style="color:#b8860b;">VUSANI IKHAYA PROPERTIES</span></small>
+  </div>
+  <button class="mobile-toggle" onclick="toggleMobileNav()">☰</button>
+  <nav class="nav-links" id="navLinks">
+    <a class="active" onclick="showSection('home')">Home</a>
+    <a onclick="showSection('properties')">Properties</a>
+    <a onclick="showSection('about')">About</a>
+    <a onclick="showSection('contact')">Contact</a>
+    <button class="btn-nav" onclick="openModal('tenantModal')">👥 I'm a Tenant</button>
+    <button class="btn-nav-outline" onclick="openModal('landlordModal')">🏠 I'm a Landlord</button>
+    <button class="btn-vusani" onclick="window.open('https://www.vusaniikhayaproperties.co.za','_blank')">
+      🏠 View Rooms
+    </button>
+    <button class="btn-nav-outline" style="border-color:#4caf8a;color:#4caf8a;" onclick="window.location.href='/admin'">🔐 Admin</button>
+  </nav>
+</header>
+
+<!-- ===== HERO ===== -->
+<section class="hero" id="homeSection">
+  <div class="partner-badge">🤝 Working with VUSANI IKHAYA PROPERTIES</div>
+  <h1>Find Your <span>Perfect Match</span></h1>
+  <p>Connecting the right tenants with the right landlords.</p>
+  <p class="partner-text">Mtshikwana Property Match works hand in hand with <strong style="color:#b8860b;">VUSANI IKHAYA PROPERTIES</strong> to help tenants find suitable rooms and landlords connect with suitable tenants.</p>
+  
+  <div class="search-box">
+    <select id="searchArea">
+      <option value="">📍 Select Area</option>
+      <option value="Alexandra Township">Alexandra Township</option>
+      <option value="Tembisa">Tembisa</option>
+      <option value="Cosmo City">Cosmo City</option>
+      <option value="Plastic View">Plastic View</option>
+      <option value="Daveyton">Daveyton</option>
+      <option value="Bramley">Bramley</option>
+      <option value="Lombardy">Lombardy</option>
+      <option value="Johannesburg CBD">Johannesburg CBD</option>
+      <option value="Sandton">Sandton</option>
+      <option value="Midrand">Midrand</option>
+    </select>
+    <input type="number" id="searchBudget" placeholder="💰 Max Budget (R)">
+    <button onclick="searchProperties()">🔍 Search</button>
+  </div>
+
+  <a href="https://www.vusaniikhayaproperties.co.za" target="_blank" class="view-rooms-btn">
+    <i class="fas fa-building"></i> VIEW AVAILABLE ROOMS
+  </a>
+
+  <div class="stats-bar">
+    <div class="stat"><div class="number" id="statTotalRooms">0</div><div class="label">Available Rooms</div></div>
+    <div class="stat"><div class="number" id="statTotalLandlords">0</div><div class="label">Active Landlords</div></div>
+    <div class="stat"><div class="number" id="statTotalTenants">0</div><div class="label">Happy Tenants</div></div>
+    <div class="stat"><div class="number" id="statMatches">0</div><div class="label">Matches Made</div></div>
+  </div>
+</section>
+
+<!-- ===== PARTNER SECTION ===== -->
+<section class="section partner-section">
+  <div class="container">
+    <div class="partner-logo">
+      <div class="brand-name">
+        <span class="gold">VUSANI</span> <span class="green">IKHAYA</span> <span class="gold">PROPERTIES</span>
+      </div>
+      <div class="divider">🤝</div>
+      <div class="brand-name">
+        Mtshikwana <span class="gold">Property Match</span>
+      </div>
+    </div>
+    <p style="text-align:center;margin-top:16px;color:#637268;font-size:16px;">
+      <strong>Working hand in hand</strong> to connect tenants with their perfect home.
+    </p>
+  </div>
+</section>
+
+<!-- ===== PROPERTIES ===== -->
+<section class="section bg-light" id="propertiesSection">
+  <div class="container">
+    <h2 class="section-title">🏠 Available Properties</h2>
+    <p class="section-subtitle">Browse through our verified listings and find your perfect home.</p>
+    <div class="property-grid" id="propertyGrid"></div>
+    <div style="text-align:center;margin-top:30px;">
+      <a href="https://www.vusaniikhayaproperties.co.za" target="_blank" class="btn-vusani" style="display:inline-block;padding:14px 40px;background:#b8860b;color:#fff;border-radius:10px;font-weight:700;font-size:16px;border:none;cursor:pointer;text-decoration:none;">
+        <i class="fas fa-building"></i> VIEW ALL ROOMS ON VUSANI IKHAYA
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ===== HOW IT WORKS ===== -->
+<section class="section" id="aboutSection">
+  <div class="container">
+    <h2 class="section-title">How It Works</h2>
+    <p class="section-subtitle">Simple, fast, and transparent - we make finding a home easy.</p>
+    <div class="steps-grid">
+      <div class="step"><span class="icon">📝</span><h4>1. Register</h4><p>Tenants tell us what they need. Landlords list their rooms.</p></div>
+      <div class="step"><span class="icon">🔍</span><h4>2. Match</h4><p>Our smart engine finds the best matches based on location and preferences.</p></div>
+      <div class="step"><span class="icon">📅</span><h4>3. Schedule</h4><p>Schedule viewings and manage appointments.</p></div>
+      <div class="step"><span class="icon">🏠</span><h4>4. Move In</h4><p>You find your perfect home. We make it happen.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== CONTACT ===== -->
+<section class="section bg-light" id="contactSection">
+  <div class="container">
+    <h2 class="section-title">📞 Contact Us</h2>
+    <p class="section-subtitle">Have questions? We're here to help you find your perfect match.</p>
+    <div style="max-width:500px;margin:0 auto;text-align:center;">
+      <p style="font-size:18px;"><strong>📱 WhatsApp:</strong> <a href="https://wa.me/27685353186" style="color:#4caf8a;">068 535 3186</a></p>
+      <p style="font-size:18px;"><strong>📧 Email:</strong> <a href="mailto:avukilerooms@gmail.com" style="color:#4caf8a;">avukilerooms@gmail.com</a></p>
+      <div style="margin-top:16px;padding:16px;background:#f8f4e8;border-radius:10px;border:1px solid #b8860b;">
+        <p style="font-size:14px;color:#637268;">
+          <strong style="color:#b8860b;">🏠 View Available Rooms</strong><br>
+          To view available rooms and property listings, visit:<br>
+          <a href="https://www.vusaniikhayaproperties.co.za" target="_blank" style="color:#b8860b;font-weight:700;font-size:16px;">
+            www.vusaniikhayaproperties.co.za
+          </a>
+        </p>
+      </div>
+      <div style="margin-top:20px;display:flex;gap:12px;justify-content:center;flex-wrap:wrap;">
+        <button class="btn-nav" onclick="openModal('tenantModal')" style="background:#4caf8a;color:#fff;padding:12px 30px;border:none;border-radius:8px;font-weight:700;cursor:pointer;">I'm a Tenant</button>
+        <button class="btn-nav-outline" onclick="openModal('landlordModal')" style="background:transparent;border:2px solid #4caf8a;color:#4caf8a;padding:12px 30px;border-radius:8px;font-weight:700;cursor:pointer;">I'm a Landlord</button>
+        <a href="https://www.vusaniikhayaproperties.co.za" target="_blank" class="btn-vusani" style="display:inline-block;padding:12px 30px;background:#b8860b;color:#fff;border-radius:8px;font-weight:700;font-size:14px;border:none;cursor:pointer;text-decoration:none;">
+          🏠 View Rooms
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== FOOTER ===== -->
+<footer class="footer">
+  <div class="footer-grid">
+    <div>
+      <h4>🏠 Mtshikwana Property Match</h4>
+      <p style="font-size:14px;color:rgba(255,255,255,0.5);">
+        Working hand in hand with <span class="gold">VUSANI IKHAYA PROPERTIES</span>
+      </p>
+    </div>
+    <div>
+      <h4>Quick Links</h4>
+      <a onclick="showSection('home')">Home</a>
+      <a onclick="showSection('properties')">Properties</a>
+      <a onclick="showSection('about')">About</a>
+      <a onclick="showSection('contact')">Contact</a>
+    </div>
+    <div>
+      <h4>Contact</h4>
+      <a href="https://wa.me/27685353186">📱 068 535 3186</a>
+      <a href="mailto:avukilerooms@gmail.com">📧 avukilerooms@gmail.com</a>
+    </div>
+    <div>
+      <h4>View Rooms</h4>
+      <a href="https://www.vusaniikhayaproperties.co.za" target="_blank" style="color:#b8860b;">
+        🏠 www.vusaniikhayaproperties.co.za
+      </a>
+      <a href="/admin">🔐 Admin Dashboard</a>
+    </div>
+  </div>
+  <div class="bottom">
+    &copy; 2026 Mtshikwana Property Match. Working hand in hand with <span class="gold">VUSANI IKHAYA PROPERTIES</span>.
+    <br><span style="font-size:11px;color:rgba(255,255,255,0.3);">Powered by MongoDB</span>
+  </div>
+</footer>
+
+<!-- ===== TENANT MODAL ===== -->
+<div class="modal-overlay" id="tenantModal">
+  <div class="modal">
+    <button class="close" onclick="closeModal('tenantModal')">✕</button>
+    <h2>👥 Register as Tenant</h2>
+    <p>Tell us what you're looking for and we'll find the perfect match.</p>
+    <form id="tenantRegisterForm">
+      <div class="form-group"><label>Full Name *</label><input type="text" id="regTenantName" required></div>
+      <div class="form-group"><label>WhatsApp Number *</label><input type="text" id="regTenantWhatsApp" placeholder="068 535 3186" required></div>
+      <div class="form-group"><label>Preferred Location *</label>
+        <select id="regTenantLocation" required>
+          <option value="">Select area...</option>
+          <option value="Alexandra Township">Alexandra Township</option>
+          <option value="Tembisa">Tembisa</option>
+          <option value="Cosmo City">Cosmo City</option>
+          <option value="Plastic View">Plastic View</option>
+          <option value="Daveyton">Daveyton</option>
+          <option value="Bramley">Bramley</option>
+          <option value="Lombardy">Lombardy</option>
+          <option value="Johannesburg CBD">Johannesburg CBD</option>
+          <option value="Sandton">Sandton</option>
+          <option value="Midrand">Midrand</option>
+          <option value="Any">Any (No preference)</option>
+        </select>
+      </div>
+      <div class="form-group"><label>Maximum Budget (R) *</label><input type="number" id="regTenantBudget" placeholder="3000" required></div>
+      <div class="form-group"><label>Minimum Budget (R)</label><input type="number" id="regTenantMinBudget" placeholder="1500"></div>
+      <div class="form-group"><label>Room Type Preferred *</label>
+        <select id="regTenantRoomType" required>
+          <option value="">Select type...</option>
+          <option value="Single Room">Single Room</option>
+          <option value="Double Room">Double Room</option>
+          <option value="Shared Room">Shared Room</option>
+          <option value="Studio">Studio</option>
+          <option value="1 Bedroom">1 Bedroom</option>
+          <option value="2 Bedroom">2 Bedroom</option>
+          <option value="Backroom">Backroom</option>
+          <option value="Flat">Flat</option>
+          <option value="Any">Any</option>
+        </select>
+      </div>
+      <div class="form-group"><label>Move-in Date *</label><input type="date" id="regTenantMoveIn" required></div>
+      <div class="form-group"><label>Parking Required</label><select id="regTenantParking"><option value="No">No</option><option value="Yes">Yes</option></select></div>
+      <div class="form-group"><label>Private Bathroom Required</label><select id="regTenantPrivateBathroom"><option value="No">No</option><option value="Yes">Yes</option></select></div>
+      <div class="form-group"><label>Child Friendly Required</label><select id="regTenantChildFriendly"><option value="No">No</option><option value="Yes">Yes</option></select></div>
+      <div class="form-group"><label>Additional Notes</label><textarea id="regTenantNotes" placeholder="Any special requirements..."></textarea></div>
+      <button type="submit" class="btn-submit">✅ Register as Tenant</button>
+    </form>
+  </div>
+</div>
+
+<!-- ===== LANDLORD MODAL ===== -->
+<div class="modal-overlay" id="landlordModal">
+  <div class="modal">
+    <button class="close" onclick="closeModal('landlordModal')">✕</button>
+    <h2>🏠 List Your Property</h2>
+    <p>Reach thousands of tenants looking for a home in your area.</p>
+    <form id="landlordRegisterForm">
+      <div class="form-group"><label>Landlord Name *</label><input type="text" id="regLandlordName" required></div>
+      <div class="form-group"><label>WhatsApp Number *</label><input type="text" id="regLandlordWhatsApp" placeholder="068 535 3186" required></div>
+      <div class="form-group"><label>Contact Number</label><input type="text" id="regLandlordContact" placeholder="068 535 3186"></div>
+      <div class="form-group"><label>Property Name *</label><input type="text" id="regLandlordProperty" required></div>
+      <div class="form-group"><label>Area/Township *</label>
+        <select id="regLandlordArea" required>
+          <option value="">Select area...</option>
+          <option value="Alexandra Township">Alexandra Township</option>
+          <option value="Tembisa">Tembisa</option>
+          <option value="Cosmo City">Cosmo City</option>
+          <option value="Plastic View">Plastic View</option>
+          <option value="Daveyton">Daveyton</option>
+          <option value="Bramley">Bramley</option>
+          <option value="Lombardy">Lombardy</option>
+          <option value="Johannesburg CBD">Johannesburg CBD</option>
+          <option value="Sandton">Sandton</option>
+          <option value="Midrand">Midrand</option>
+        </select>
+      </div>
+      <div class="form-group"><label>Room Type *</label>
+        <select id="regLandlordRoomType" required>
+          <option value="">Select type...</option>
+          <option value="Single Room">Single Room</option>
+          <option value="Double Room">Double Room</option>
+          <option value="Shared Room">Shared Room</option>
+          <option value="Studio">Studio</option>
+          <option value="1 Bedroom">1 Bedroom</option>
+          <option value="2 Bedroom">2 Bedroom</option>
+          <option value="Backroom">Backroom</option>
+          <option value="Flat">Flat</option>
+        </select>
+      </div>
+      <div class="form-group"><label>Monthly Rent (R) *</label><input type="number" id="regLandlordRent" placeholder="2500" required></div>
+      <div class="form-group"><label>Deposit (R)</label><input type="number" id="regLandlordDeposit" placeholder="1000"></div>
+      <div class="form-group"><label>Available From *</label><input type="date" id="regLandlordAvailable" required></div>
+      <div class="form-group"><label>Number of Rooms Available *</label><input type="number" id="regLandlordRooms" placeholder="1" min="1" required></div>
+      <div class="form-group"><label>Parking</label><select id="regLandlordParking"><option value="No">No</option><option value="Yes">Yes</option><option value="Street">Street</option><option value="Off-street">Off-street</option></select></div>
+      <div class="form-group"><label>Bathroom</label><select id="regLandlordBathroom"><option value="Shared">Shared</option><option value="Private">Private</option></select></div>
+      <div class="form-group"><label>Child Friendly</label><select id="regLandlordChildFriendly"><option value="No">No</option><option value="Yes">Yes</option></select></div>
+      <div class="form-group"><label>Additional Notes</label><textarea id="regLandlordNotes" placeholder="Any special requirements for tenants..."></textarea></div>
+      <button type="submit" class="btn-submit">✅ List Property</button>
+    </form>
+  </div>
+</div>
+
+<!-- ===== SCRIPTS ===== -->
+<script src="data.js"></script>
+<script src="app.js"></script>
+
+</body>
+</html>
