@@ -1,0 +1,284 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Admin | Mtshikwana Property Match</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<!-- ===== ADMIN PANEL ===== -->
+<div class="admin-panel" style="display:block;position:relative;z-index:1;background:#f0f4f1;min-height:100vh;">
+  <div class="admin-header">
+    <div class="admin-brand">
+      🔐 Mtshikwana <span>Property Match</span> 
+      <span style="font-size:12px;font-weight:400;color:rgba(255,255,255,0.5);">Admin</span>
+      <span style="font-size:11px;font-weight:400;color:#b8860b;margin-left:8px;">🤝 VUSANI IKHAYA PROPERTIES</span>
+    </div>
+    <div class="admin-actions">
+      <span id="adminUser" style="color:rgba(255,255,255,0.6);font-size:13px;"></span>
+      <button onclick="window.location.href='/'">🏠 View Site</button>
+      <button class="btn-danger" onclick="logout()">Logout</button>
+    </div>
+  </div>
+
+  <div class="admin-container">
+
+    <!-- Admin Login -->
+    <div id="adminLoginScreen">
+      <div class="login-box">
+        <h2>🔐 Admin Login</h2>
+        <p style="color:#637268;font-size:14px;">Enter your admin password to manage the platform.</p>
+        <form id="adminLoginForm">
+          <div style="margin-bottom:16px;">
+            <label style="display:block;font-weight:700;margin-bottom:4px;">Password</label>
+            <input type="password" id="adminPassword" placeholder="Enter admin password" required>
+          </div>
+          <div id="adminLoginError" class="login-error"></div>
+          <button type="submit">Log In</button>
+        </form>
+      </div>
+    </div>
+
+    <!-- Admin Content -->
+    <div id="adminContent" style="display:none;">
+
+      <!-- Stats -->
+      <div class="admin-stats">
+        <div class="admin-stat"><div class="number" id="adminStatTenants">0</div><div class="label">👥 Tenants</div></div>
+        <div class="admin-stat"><div class="number" id="adminStatLandlords">0</div><div class="label">🏠 Landlords</div></div>
+        <div class="admin-stat"><div class="number" id="adminStatOnline">0</div><div class="label">🟢 Online</div></div>
+        <div class="admin-stat"><div class="number" id="adminStatMatches">0</div><div class="label">🤝 Matches</div></div>
+        <div class="admin-stat"><div class="number" id="adminStatAppointments">0</div><div class="label">📅 Appointments</div></div>
+      </div>
+
+      <!-- Tabs -->
+      <div class="admin-tabs">
+        <button class="active" onclick="switchAdminTab('dashboard')">📊 Dashboard</button>
+        <button onclick="switchAdminTab('landlords')">🏠 Landlords <span class="count" id="adminCountLandlords">0</span></button>
+        <button onclick="switchAdminTab('tenants')">👥 Tenants <span class="count" id="adminCountTenants">0</span></button>
+        <button onclick="switchAdminTab('matches')">🤝 Matches <span class="count" id="adminCountMatches">0</span></button>
+        <button onclick="switchAdminTab('appointments')">📅 Appointments <span class="count" id="adminCountAppointments">0</span></button>
+      </div>
+
+      <!-- Dashboard Tab -->
+      <div id="adminDashboardSection" class="admin-section active">
+        <div class="admin-card">
+          <h3>📊 Overview</h3>
+          <p style="color:#637268;">Welcome to the Mtshikwana Property Match admin dashboard.</p>
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:14px;margin-top:16px;">
+            <div style="background:#f9fcfb;padding:12px;border-radius:8px;text-align:center;">
+              <div style="font-size:24px;font-weight:900;color:#4caf8a;" id="dashPendingAppts">0</div>
+              <div style="font-size:12px;color:#637268;">⏳ Pending Appointments</div>
+            </div>
+            <div style="background:#f9fcfb;padding:12px;border-radius:8px;text-align:center;">
+              <div style="font-size:24px;font-weight:900;color:#4caf8a;" id="dashTodayAppts">0</div>
+              <div style="font-size:12px;color:#637268;">📅 Today's Appointments</div>
+            </div>
+            <div style="background:#f9fcfb;padding:12px;border-radius:8px;text-align:center;">
+              <div style="font-size:24px;font-weight:900;color:#4caf8a;" id="dashCompleted">0</div>
+              <div style="font-size:12px;color:#637268;">✅ Completed</div>
+            </div>
+          </div>
+        </div>
+        <div class="admin-card">
+          <h3>📅 Quick Actions</h3>
+          <div style="display:flex;gap:12px;flex-wrap:wrap;">
+            <button class="btn-nav" onclick="switchAdminTab('matches')">🔍 View Matches</button>
+            <button class="btn-nav" onclick="switchAdminTab('appointments')" style="background:#e5a638;">📅 Manage Appointments</button>
+            <button class="btn-nav" onclick="switchAdminTab('landlords')" style="background:#0d1f12;">🏠 Manage Landlords</button>
+            <a href="https://www.vusaniikhayaproperties.co.za" target="_blank" style="background:#b8860b;color:#fff;padding:10px 20px;border:none;border-radius:8px;font-weight:600;cursor:pointer;text-decoration:none;display:inline-block;">🏠 View VUSANI IKHAYA</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Landlords Tab -->
+      <div id="adminLandlordsSection" class="admin-section">
+        <div class="admin-card">
+          <div class="card-header"><h3>🏠 Landlords</h3><button class="btn-nav" onclick="openModal('landlordModal')">➕ Add Landlord</button></div>
+          <div id="adminLandlordList"></div>
+        </div>
+      </div>
+
+      <!-- Tenants Tab -->
+      <div id="adminTenantsSection" class="admin-section">
+        <div class="admin-card">
+          <div class="card-header"><h3>👥 Tenants</h3><button class="btn-nav" onclick="openModal('tenantModal')">➕ Add Tenant</button></div>
+          <div id="adminTenantList"></div>
+        </div>
+      </div>
+
+      <!-- Matches Tab -->
+      <div id="adminMatchesSection" class="admin-section">
+        <div class="admin-card">
+          <div class="card-header"><h3>🤝 Matches</h3><button class="btn-nav" onclick="generateMatches()">🔄 Generate Matches</button></div>
+          <div id="adminMatchList"></div>
+        </div>
+      </div>
+
+      <!-- Appointments Tab -->
+      <div id="adminAppointmentsSection" class="admin-section">
+        <div class="admin-card">
+          <div class="card-header"><h3>📅 Appointments</h3>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;">
+              <button class="btn-nav" onclick="filterAppointments('all')" style="background:#0d1f12;font-size:12px;padding:6px 16px;">All</button>
+              <button class="btn-nav" onclick="filterAppointments('pending')" style="background:#e5a638;font-size:12px;padding:6px 16px;">Pending</button>
+              <button class="btn-nav" onclick="filterAppointments('confirmed')" style="background:#4caf8a;font-size:12px;padding:6px 16px;">Confirmed</button>
+              <button class="btn-nav" onclick="filterAppointments('completed')" style="background:#1e40af;font-size:12px;padding:6px 16px;">Completed</button>
+            </div>
+          </div>
+          <div id="adminAppointmentList"></div>
+        </div>
+
+        <!-- Calendar -->
+        <div class="admin-card">
+          <h3>📆 Calendar View</h3>
+          <div id="calendarContainer"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== MODALS ===== -->
+<!-- Tenant Modal -->
+<div class="modal-overlay" id="tenantModal">
+  <div class="modal">
+    <button class="close" onclick="closeModal('tenantModal')">✕</button>
+    <h2>👥 Register as Tenant</h2>
+    <p>Tell us what you're looking for and we'll find the perfect match.</p>
+    <form id="tenantRegisterForm">
+      <div class="form-group"><label>Full Name *</label><input type="text" id="regTenantName" required></div>
+      <div class="form-group"><label>WhatsApp Number *</label><input type="text" id="regTenantWhatsApp" placeholder="068 535 3186" required></div>
+      <div class="form-group"><label>Preferred Location *</label>
+        <select id="regTenantLocation" required>
+          <option value="">Select area...</option>
+          <option value="Alexandra Township">Alexandra Township</option>
+          <option value="Tembisa">Tembisa</option>
+          <option value="Cosmo City">Cosmo City</option>
+          <option value="Plastic View">Plastic View</option>
+          <option value="Daveyton">Daveyton</option>
+          <option value="Bramley">Bramley</option>
+          <option value="Lombardy">Lombardy</option>
+          <option value="Johannesburg CBD">Johannesburg CBD</option>
+          <option value="Sandton">Sandton</option>
+          <option value="Midrand">Midrand</option>
+          <option value="Any">Any (No preference)</option>
+        </select>
+      </div>
+      <div class="form-group"><label>Maximum Budget (R) *</label><input type="number" id="regTenantBudget" placeholder="3000" required></div>
+      <div class="form-group"><label>Minimum Budget (R)</label><input type="number" id="regTenantMinBudget" placeholder="1500"></div>
+      <div class="form-group"><label>Room Type Preferred *</label>
+        <select id="regTenantRoomType" required>
+          <option value="">Select type...</option>
+          <option value="Single Room">Single Room</option>
+          <option value="Double Room">Double Room</option>
+          <option value="Shared Room">Shared Room</option>
+          <option value="Studio">Studio</option>
+          <option value="1 Bedroom">1 Bedroom</option>
+          <option value="2 Bedroom">2 Bedroom</option>
+          <option value="Backroom">Backroom</option>
+          <option value="Flat">Flat</option>
+          <option value="Any">Any</option>
+        </select>
+      </div>
+      <div class="form-group"><label>Move-in Date *</label><input type="date" id="regTenantMoveIn" required></div>
+      <div class="form-group"><label>Parking Required</label><select id="regTenantParking"><option value="No">No</option><option value="Yes">Yes</option></select></div>
+      <div class="form-group"><label>Private Bathroom Required</label><select id="regTenantPrivateBathroom"><option value="No">No</option><option value="Yes">Yes</option></select></div>
+      <div class="form-group"><label>Child Friendly Required</label><select id="regTenantChildFriendly"><option value="No">No</option><option value="Yes">Yes</option></select></div>
+      <div class="form-group"><label>Additional Notes</label><textarea id="regTenantNotes" placeholder="Any special requirements..."></textarea></div>
+      <button type="submit" class="btn-submit">✅ Register as Tenant</button>
+    </form>
+  </div>
+</div>
+
+<!-- Landlord Modal -->
+<div class="modal-overlay" id="landlordModal">
+  <div class="modal">
+    <button class="close" onclick="closeModal('landlordModal')">✕</button>
+    <h2>🏠 List Your Property</h2>
+    <p>Reach thousands of tenants looking for a home in your area.</p>
+    <form id="landlordRegisterForm">
+      <div class="form-group"><label>Landlord Name *</label><input type="text" id="regLandlordName" required></div>
+      <div class="form-group"><label>WhatsApp Number *</label><input type="text" id="regLandlordWhatsApp" placeholder="068 535 3186" required></div>
+      <div class="form-group"><label>Contact Number</label><input type="text" id="regLandlordContact" placeholder="068 535 3186"></div>
+      <div class="form-group"><label>Property Name *</label><input type="text" id="regLandlordProperty" required></div>
+      <div class="form-group"><label>Area/Township *</label>
+        <select id="regLandlordArea" required>
+          <option value="">Select area...</option>
+          <option value="Alexandra Township">Alexandra Township</option>
+          <option value="Tembisa">Tembisa</option>
+          <option value="Cosmo City">Cosmo City</option>
+          <option value="Plastic View">Plastic View</option>
+          <option value="Daveyton">Daveyton</option>
+          <option value="Bramley">Bramley</option>
+          <option value="Lombardy">Lombardy</option>
+          <option value="Johannesburg CBD">Johannesburg CBD</option>
+          <option value="Sandton">Sandton</option>
+          <option value="Midrand">Midrand</option>
+        </select>
+      </div>
+      <div class="form-group"><label>Room Type *</label>
+        <select id="regLandlordRoomType" required>
+          <option value="">Select type...</option>
+          <option value="Single Room">Single Room</option>
+          <option value="Double Room">Double Room</option>
+          <option value="Shared Room">Shared Room</option>
+          <option value="Studio">Studio</option>
+          <option value="1 Bedroom">1 Bedroom</option>
+          <option value="2 Bedroom">2 Bedroom</option>
+          <option value="Backroom">Backroom</option>
+          <option value="Flat">Flat</option>
+        </select>
+      </div>
+      <div class="form-group"><label>Monthly Rent (R) *</label><input type="number" id="regLandlordRent" placeholder="2500" required></div>
+      <div class="form-group"><label>Deposit (R)</label><input type="number" id="regLandlordDeposit" placeholder="1000"></div>
+      <div class="form-group"><label>Available From *</label><input type="date" id="regLandlordAvailable" required></div>
+      <div class="form-group"><label>Number of Rooms Available *</label><input type="number" id="regLandlordRooms" placeholder="1" min="1" required></div>
+      <div class="form-group"><label>Parking</label><select id="regLandlordParking"><option value="No">No</option><option value="Yes">Yes</option><option value="Street">Street</option><option value="Off-street">Off-street</option></select></div>
+      <div class="form-group"><label>Bathroom</label><select id="regLandlordBathroom"><option value="Shared">Shared</option><option value="Private">Private</option></select></div>
+      <div class="form-group"><label>Child Friendly</label><select id="regLandlordChildFriendly"><option value="No">No</option><option value="Yes">Yes</option></select></div>
+      <div class="form-group"><label>Additional Notes</label><textarea id="regLandlordNotes" placeholder="Any special requirements for tenants..."></textarea></div>
+      <button type="submit" class="btn-submit">✅ List Property</button>
+    </form>
+  </div>
+</div>
+
+<!-- Appointment Modal -->
+<div class="modal-overlay" id="appointmentModal">
+  <div class="modal">
+    <button class="close" onclick="closeModal('appointmentModal')">✕</button>
+    <h2>📅 Schedule Appointment</h2>
+    <p>Schedule a viewing between the tenant and landlord.</p>
+    <form id="appointmentForm">
+      <div class="form-group"><label>Tenant</label><input type="text" id="apptTenant" readonly></div>
+      <div class="form-group"><label>Landlord</label><input type="text" id="apptLandlord" readonly></div>
+      <div class="form-group"><label>Property</label><input type="text" id="apptProperty" readonly></div>
+      <div class="form-group"><label>Area</label><input type="text" id="apptArea" readonly></div>
+      <div class="form-group"><label>Rent (R)</label><input type="text" id="apptRent" readonly></div>
+      <div class="form-group"><label>Appointment Date *</label><input type="date" id="apptDate" required></div>
+      <div class="form-group"><label>Appointment Time *</label><input type="time" id="apptTime" required></div>
+      <div class="form-group"><label>Appointment Type</label>
+        <select id="apptType">
+          <option value="Room Viewing">Room Viewing</option>
+          <option value="Contract Signing">Contract Signing</option>
+          <option value="Key Handover">Key Handover</option>
+        </select>
+      </div>
+      <div class="form-group"><label>Notes</label><textarea id="apptNotes" placeholder="Any special instructions..."></textarea></div>
+      <input type="hidden" id="apptTenantId">
+      <input type="hidden" id="apptLandlordId">
+      <input type="hidden" id="apptMatchId">
+      <button type="submit" class="btn-submit">📅 Schedule Appointment</button>
+    </form>
+  </div>
+</div>
+
+<!-- ===== SCRIPTS ===== -->
+<script src="data.js"></script>
+<script src="admin.js"></script>
+
+</body>
+</html>
