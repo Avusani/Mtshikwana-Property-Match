@@ -41,3 +41,12 @@ build/
 
 # Railway files
 .railway/
+
+# Vercel
+.vercel/
+
+# Render
+.render/
+
+# Data file (contains saved data)
+data.json
